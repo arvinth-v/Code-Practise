@@ -1,0 +1,84 @@
+#include <ctype.h>
+#include <stdio.h>
+
+
+
+char * licenseKeyFormatting(char * s, int k){
+    
+    if (s == NULL) {
+        return NULL;
+    }    
+    if (( k <= 0) || (k > 10000 )){
+        return NULL;
+    }
+    if (( strlen(s) <= 0) || (strlen(s) > 100000 )){
+        return NULL;
+    }
+    
+    char *res = NULL;
+   
+    if (strlen(s) == 1){
+        res = calloc(1,((strlen(s) + k +1) * sizeof(char)));
+        res[0] = toupper(s[0]);
+        if (res[0] == '-'){
+            res[0] = '\0';
+            return res;
+        }
+        return res;
+    }
+    char *tmp = NULL;
+    tmp = strdup(s);
+    char *tmp2 = NULL;
+    tmp2 = calloc(1,((strlen(s) + 1) * sizeof(char)));
+    
+    int p = 0,q =0;
+    while (tmp[p] != '\0'){
+        if (tmp[p] == '-'){
+            p++;
+            continue;
+        }
+        tmp2[q] = toupper(tmp[p]);
+        p++;
+        q++;
+    }
+    tmp2[q] = '\0';
+    int len = strlen(tmp2);
+    int num = len/k;
+    int mod = len%k;
+    int flag = 0;
+    res = calloc(1,((strlen(s) + num +1) * sizeof(char)));
+    if (mod != 0){
+        strncpy(res,tmp2,mod);
+        strcat(res,"-");
+        flag =1;
+    }  
+    
+    int i = 0;
+    char *ptr = tmp2;
+    if (flag == 1){
+        ptr += mod;
+    }
+
+    while (i < num) { 
+        if (i != 0) {
+            strcat(res,"-");
+        } 
+        strncat((res),(ptr),k);               
+        i++;
+        ptr += (k);
+    }
+    
+    return res;
+    free(tmp2);
+    free(tmp);
+}
+
+int main()
+{
+    int j = 0;
+    char str[] = "0123456789";
+    char *str2 = NULL;
+    str2 = licenseKeyFormatting(str, 1);
+    printf("str1 %s \nstr2 %s\n",str ,str2);
+    return 0;
+}
