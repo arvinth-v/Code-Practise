@@ -1,0 +1,100 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+
+char* emails[] = {"test.email+alex@leetcode.com","test.email.leet+alex@code.com"};
+#if 0
+    "fg.r.u.uzj+o.pw@kziczvh.com",
+    "r.cyo.g+d.h+b.ja@tgsg.z.com",
+    "fg.r.u.uzj+o.f.d@kziczvh.com",
+    "r.cyo.g+ng.r.iq@tgsg.z.com",
+    "fg.r.u.uzj+lp.k@kziczvh.com",
+    "r.cyo.g+n.h.e+n.g@tgsg.z.com",
+    "fg.r.u.uzj+k+p.j@kziczvh.com",
+    "fg.r.u.uzj+w.y+b@kziczvh.com",
+    "r.cyo.g+x+d.c+f.t@tgsg.z.com",
+    "r.cyo.g+x+t.y.l.i@tgsg.z.com",
+    "r.cyo.g+brxxi@tgsg.z.com",
+    "r.cyo.g+z+dr.k.u@tgsg.z.com",
+    "r.cyo.g+d+l.c.n+g@tgsg.z.com",
+    "fg.r.u.uzj+vq.o@kziczvh.com",
+    "fg.r.u.uzj+uzq@kzic.zvh.com",
+    "fg.r.u.uzj+mvz@kziczvh.com",
+    "fg.r.u.uzj+taj@kzic.zvh.com",
+    "fg.r.u.uzj+fek@kziczvh.com"};
+"test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"};
+"a@leetcode.com","b@leetcode.com","c@leetcode.com"};
+#endif
+
+int numUniqueEmails(char ** emails, int emailsSize){
+    int i = 0, count = 0 , dupcount = 0;
+    char user[100];
+    char domain[100];
+    char * ret[100] = {'\0'};
+
+    if ((emailsSize <= 100) && (emails)){
+        while (i < emailsSize) {
+            char tmp[100] = {'\0'};
+            strcpy(tmp, emails[i]);
+            memset (&user,0,100);
+            memset (&domain,0,100);
+            char* tok =  NULL;
+            tok = strtok (tmp,"@");
+            strcpy(user,tok);
+            while (tok != NULL) {
+                strcpy(domain,tok);
+                tok = strtok (NULL,"@");
+            }
+            memset (&tmp,0,100);
+            int m = 0 ,n = 0;
+            for (m ; m < (strlen(user)); m++){
+                if (user[m] == '+'){
+                    break;
+                } else if (user[m] == '.'){
+                    continue;
+                }else {
+                    tmp[n] = user[m];
+                    n++;
+                }
+            }
+
+            strcat(tmp,"@");
+            strcat(tmp,domain);
+            ret[i] = calloc(1,(strlen(tmp) + 1));
+            snprintf(ret[i], strlen(tmp),"%s",tmp);
+            printf("i %d : %s \n",i ,ret[i]);
+            if (i == 0) {
+                dupcount += 1;
+            }
+            i++ ;
+        }
+        int h = 0, k = 0, flag = 0;
+        for (h = 0; h < i ; h++){
+            for (k = 0 ; k != h; k++) {
+                if(strcmp(ret[h],ret[k]) == 0){
+                    flag =0;
+                    break;
+                } else {
+                    flag = 1;
+                }
+            }
+             if (flag ==1 ){
+                dupcount += 1;
+            }
+        }
+    }
+
+    return (dupcount);
+}
+
+
+
+
+int main() {
+    int result = 0;
+    result = numUniqueEmails(emails, 2);
+    printf ("\n REsult : %d \n", result);
+    return 0;
+
+}
