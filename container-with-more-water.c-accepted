@@ -1,0 +1,39 @@
+
+You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
+
+Find two lines that together with the x-axis form a container, such that the container contains the most water.
+
+Return the maximum amount of water a container can store.
+
+Notice that you may not slant the container.
+
+/*
+https://leetcode.com/problems/container-with-most-water/
+*/
+
+int maxArea(int* height, int heightSize){
+    if (heightSize < 2){
+        return height[0];
+    } else if (heightSize > 100000){
+        return 0;
+    } else {
+        int left = 0 , right = 0 , max = 0;
+        int width = 0, ht = 0, area = 0;
+        right = heightSize - 1; 
+        while (left < right){
+            width = right - left;
+            ht = (height[right] > height[left]) ? height[left] : height[right];
+            area = width * ht;
+            if (max < area) max = area;
+            if (height[right] > height[left]){
+                left++ ;
+            } else {
+                right-- ;
+            }
+            
+        }
+        
+        
+        return max;
+    }
+}
